@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MyBatisCodeHelperDatasource">
+    <option name="projectProfile">
+      <ProjectProfile>
+        <option name="addSchemaName" value="true" />
+        <option name="addSerializeUid" value="true" />
+        <option name="generateService" value="true" />
+        <option name="generateServiceInterface" value="true" />
+        <option name="javaMapperPackage" value="com.usian.mapper" />
+        <option name="javaMapperPath" value="$PROJECT_DIR$/common_mapper/src/main/java" />
+        <option name="javaModelPackage" value="com.usian.pojo" />
+        <option name="javaModelPath" value="$PROJECT_DIR$/common_pojo/src/main/java" />
+        <option name="lastDatabaseCrudChooseModuleName" value="common_pojo" />
+        <option name="lombokBuilderAnnotation" value="true" />
+        <option name="lombokDataAnnotation" value="true" />
+        <option name="mapperAnnotaion" value="true" />
+        <option name="moduleNameToPackageAndPathMap">
+          <map>
+            <entry key="common_pojo">
+              <value>
+                <UserPackageAndPathInfoByModule>
+                  <option name="javaMapperPackage" value="com.usian.mapper" />
+                  <option name="javaMapperPath" value="$PROJECT_DIR$/common_mapper/src/main/java" />
+                  <option name="javaModelPacakge" value="com.usian.pojo" />
+                  <option name="javaModelPath" value="$PROJECT_DIR$/common_pojo/src/main/java" />
+                  <option name="javaServiceInterfacePackage" value="com.usian.service" />
+                  <option name="javaServiceInterfacePath" value="$PROJECT_DIR$/usian_item_service/src/main/java" />
+                  <option name="javaServicePackage" value="com.usian.service" />
+                  <option name="javaServicePath" value="$PROJECT_DIR$/usian_item_service/src/main/java" />
+                  <option name="xmlPackage" value="com.usian.mapper" />
+                  <option name="xmlPath" value="$PROJECT_DIR$/common_mapper/src/main/java" />
+                </UserPackageAndPathInfoByModule>
+              </value>
+            </entry>
+          </map>
+        </option>
+        <option name="p3CComment" value="true" />
+        <option name="tableGenerateConfigs">
+          <map>
+            <entry key="usian:tb_content">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="id" />
+                  <option name="javaModelName" value="TbContent" />
+                  <option name="moduleName" value="common_pojo" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="usian:tb_content_category">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="id" />
+                  <option name="javaModelName" value="TbContentCategory" />
+                  <option name="moduleName" value="common_pojo" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="usian:tb_item">
+              <value>
+                <TableGenerateConfig>
+                  <option name="columnOverrideList">
+                    <list>
+                      <MyColumnOverride>
+                        <option name="columnName" value="status" />
+                        <option name="javaType" value="java.lang.Integer" />
+                      </MyColumnOverride>
+                    </list>
+                  </option>
+                  <option name="javaModelName" value="TbItem" />
+                  <option name="moduleName" value="common_pojo" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="usian:tb_item_cat">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="id" />
+                  <option name="javaModelName" value="TbItemCat" />
+                  <option name="moduleName" value="common_pojo" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="usian:tb_item_desc">
+              <value>
+                <TableGenerateConfig>
+                  <option name="javaModelName" value="TbItemDesc" />
+                  <option name="moduleName" value="common_pojo" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="usian:tb_item_param">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="id" />
+                  <option name="javaModelName" value="TbItemParam" />
+                  <option name="moduleName" value="common_pojo" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="usian:tb_item_param_item">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="id" />
+                  <option name="javaModelName" value="TbItemParamItem" />
+                  <option name="moduleName" value="common_pojo" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="usian:tb_order">
+              <value>
+                <TableGenerateConfig>
+                  <option name="javaModelName" value="TbOrder" />
+                  <option name="moduleName" value="common_pojo" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="usian:tb_order_item">
+              <value>
+                <TableGenerateConfig>
+                  <option name="javaModelName" value="TbOrderItem" />
+                  <option name="moduleName" value="common_pojo" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="usian:tb_order_shipping">
+              <value>
+                <TableGenerateConfig>
+                  <option name="javaModelName" value="TbOrderShipping" />
+                  <option name="moduleName" value="common_pojo" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="usian:tb_user">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="id" />
+                  <option name="javaModelName" value="TbUser" />
+                  <option name="moduleName" value="common_pojo" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+          </map>
+        </option>
+        <option name="xmlMapperPackage" value="com.usian.mapper" />
+        <option name="xmlMapperPath" value="$PROJECT_DIR$/common_mapper/src/main/java" />
+      </ProjectProfile>
+    </option>
+  </component>
+</project>
