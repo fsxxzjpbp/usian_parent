@@ -12,4 +12,7 @@ public interface ContentServiceFeign {
 
     @RequestMapping("/service/contentCategory/selectContentCategoryByParentId")
     List<TbContentCategory> selectContentCategoryByParentId(@RequestParam Long id);
+
+    @RequestMapping("/service/contentCategory/insertContentCategory")
+    Integer insertContentCategory(TbContentCategory tbContentCategory);
 }

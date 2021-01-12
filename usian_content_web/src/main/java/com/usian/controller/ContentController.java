@@ -26,4 +26,13 @@ public class ContentController {
         }
         return Result.error("查询内容分类失败！");
     }
+
+    @RequestMapping("/insertContentCategory")
+    public Result insertContentCategory(TbContentCategory tbContentCategory) {
+        Integer insertNum = contentServiceFeign.insertContentCategory(tbContentCategory);
+        if (insertNum == 1) {
+            return Result.ok();
+        }
+        return Result.error("添加内容分类失败！");
+    }
 }
