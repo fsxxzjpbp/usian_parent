@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 @EnableFeignClients
 public class ContentWebApp {
+
     public static void main(String[] args) {
         SpringApplication.run(ContentWebApp.class, args);
     }

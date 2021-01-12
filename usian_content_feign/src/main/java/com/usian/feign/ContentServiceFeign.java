@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient("/usian-content-service")
+@FeignClient("usian-content-service")
 public interface ContentServiceFeign {
+
     @RequestMapping("/service/contentCategory/selectContentCategoryByParentId")
-    List<TbContentCategory> selectContentCategoryByParentId(@RequestParam Integer id);
+    List<TbContentCategory> selectContentCategoryByParentId(@RequestParam Long id);
 }

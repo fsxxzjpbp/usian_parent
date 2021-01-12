@@ -52,7 +52,7 @@ public class ItemParamServiceImpl implements ItemParamService {
         /*QueryWrapper<TbItemParam> wrapper = new QueryWrapper<>();
         wrapper.eq("item_cat_id", itemCatId);*/
         List<TbItemParam> tbItemParamList = tbItemParamMapper.selectByExampleWithBLOBs(tbItemParamExample);
-        if (tbItemParamList == null && tbItemParamList.size() > 0) {
+        if (tbItemParamList != null && tbItemParamList.size() > 0) {
             return 0;
         }
         Date date = new Date();
