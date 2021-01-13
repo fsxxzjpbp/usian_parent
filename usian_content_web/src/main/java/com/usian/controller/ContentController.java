@@ -2,7 +2,9 @@ package com.usian.controller;
 
 
 import com.usian.feign.ContentServiceFeign;
+import com.usian.pojo.TbContent;
 import com.usian.pojo.TbContentCategory;
+import com.usian.utils.PageResult;
 import com.usian.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,5 +45,41 @@ public class ContentController {
             return Result.ok();
         }
         return Result.error("删除商品内容分类失败！");
+    }
+
+    @RequestMapping("/updateContentCategory")
+    public Result updateContentCategory(TbContentCategory tbContentCategory) {
+        Integer updateContentCategory = contentServiceFeign.updateContentCategory(tbContentCategory);
+        if (updateContentCategory == 1) {
+            return Result.ok();
+        }
+        return Result.error("修改内容分类失败！");
+    }
+
+    @RequestMapping("/selectTbContentAllByCategoryId")
+    public Result selectTbContentAllByCategoryId(Long categoryId, @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "9") Integer rows) {
+        PageResult pageResult = contentServiceFeign.selectTbContentAllByCategoryId(categoryId, page, rows);
+        if (pageResult.getResult() != null && pageResult.getResult().size() > 0) {
+            return Result.ok(pageResult);
+        }
+        return Result.error("查询内容失败！");
+    }
+
+    @RequestMapping("/insertTbContent")
+    public Result insertTbContent(TbContent tbContent) {
+        Integer insertTbContent = contentServiceFeign.insertTbContent(tbContent);
+        if (insertTbContent == 1) {
+            return Result.ok();
+        }
+        return Result.error("添加内容失败！");
+    }
+
+    @RequestMapping("/deleteContentByIds")
+    public Result deleteContentByIds(Long ids) {
+        Integer insertTbContent = contentServiceFeign.deleteContentByIds(ids);
+        if (insertTbContent == 1) {
+            return Result.ok();
+        }
+        return Result.error("删除内容失败！");
     }
 }

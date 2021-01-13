@@ -1,6 +1,8 @@
 package com.usian.service;
 
+import com.usian.pojo.TbContent;
 import com.usian.pojo.TbContentCategory;
+import com.usian.utils.PageResult;
 
 import java.util.List;
 
@@ -17,4 +19,12 @@ public interface ContentCategoryService {
     Integer insertContentCategory(TbContentCategory tbContentCategory);
 
     Integer deleteContentCategoryById(Long categoryId);
+
+    Integer updateContentCategory(TbContentCategory tbContentCategory);
+
+    PageResult selectTbContentAllByCategoryId(Long categoryId, Integer page, Integer rows);
+
+    Integer insertTbContent(TbContent tbContent);
+
+    Integer deleteContentByIds(Long ids);
 }
