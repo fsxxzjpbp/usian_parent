@@ -13,4 +13,8 @@ public interface ContentCategoryService {
      * @return List
      */
     List<TbContentCategory> selectContentCategoryByParentId(Long id);
+
+    Integer insertContentCategory(TbContentCategory tbContentCategory);
+
+    Integer deleteContentCategoryById(Long categoryId);
 }

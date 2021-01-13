@@ -47,6 +47,7 @@ public class ItemParamServiceImpl implements ItemParamService {
 
     @Override
     public Integer insertItemParam(Long itemCatId, String paramData) {
+        // 先判断这个类别有没有规格参数
         TbItemParamExample tbItemParamExample = new TbItemParamExample();
         tbItemParamExample.createCriteria().andItemCatIdEqualTo(itemCatId);
         /*QueryWrapper<TbItemParam> wrapper = new QueryWrapper<>();

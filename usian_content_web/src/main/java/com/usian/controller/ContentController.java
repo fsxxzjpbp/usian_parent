@@ -35,4 +35,13 @@ public class ContentController {
         }
         return Result.error("添加内容分类失败！");
     }
+
+    @RequestMapping("/deleteContentCategoryById")
+    public Result deleteContentCategoryById(Long categoryId) {
+        Integer deleteContentCategoryById = contentServiceFeign.deleteContentCategoryById(categoryId);
+        if (deleteContentCategoryById == 1) {
+            return Result.ok();
+        }
+        return Result.error("删除商品内容分类失败！");
+    }
 }

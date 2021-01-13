@@ -39,7 +39,7 @@ public class ItemParamController {
      * @return Result
      */
     @RequestMapping("/selectItemParamAll")
-    public Result selectItemParamAll(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "3") Integer rows) {
+    public Result selectItemParamAll(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "9") Integer rows) {
         PageResult pageResult = itemServiceFeign.selectItemParamAll(page, rows);
         if (pageResult != null && pageResult.getResult().size() > 0) {
             return Result.ok(pageResult);

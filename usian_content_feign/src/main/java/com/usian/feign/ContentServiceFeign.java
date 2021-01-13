@@ -15,4 +15,7 @@ public interface ContentServiceFeign {
 
     @RequestMapping("/service/contentCategory/insertContentCategory")
     Integer insertContentCategory(TbContentCategory tbContentCategory);
+
+    @RequestMapping("/service/contentCategory/deleteContentCategoryById")
+    Integer deleteContentCategoryById(@RequestParam Long categoryId);
 }
