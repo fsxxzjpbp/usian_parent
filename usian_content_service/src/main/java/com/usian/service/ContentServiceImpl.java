@@ -49,6 +49,9 @@ public class ContentServiceImpl implements ContentService {
         // 不能改不按原代码逻辑
         // 先从缓存中查询，查询到直接return
         List<AdNode> adNodeList = (List<AdNode>) redisClient.hget(PORTAL_AD_KEY, AD_CATEGORY_ID.toString());
+        if (adNodeList != null && adNodeList.size() > 0) {
+            return adNodeList;
+        }
         // 从数据库中查询
         TbContentExample tbContentExample = new TbContentExample();
         tbContentExample.createCriteria().andCategoryIdEqualTo(AD_CATEGORY_ID);
