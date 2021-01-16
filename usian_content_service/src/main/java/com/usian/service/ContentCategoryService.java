@@ -24,7 +24,5 @@ public interface ContentCategoryService {
 
     PageResult selectTbContentAllByCategoryId(Long categoryId, Integer page, Integer rows);
 
-    Integer insertTbContent(TbContent tbContent);
 
-    Integer deleteContentByIds(Long ids);
 }

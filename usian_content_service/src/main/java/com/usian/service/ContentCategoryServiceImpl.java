@@ -93,15 +93,5 @@ public class ContentCategoryServiceImpl implements ContentCategoryService {
         return new PageResult(tbContentPageInfo.getPageNum(), tbContentPageInfo.getTotal(), tbContentPageInfo.getList());
     }
 
-    @Override
-    public Integer insertTbContent(TbContent tbContent) {
-        tbContent.setCreated(new Date());
-        tbContent.setUpdated(new Date());
-        return tbContentMapper.insertSelective(tbContent);
-    }
 
-    @Override
-    public Integer deleteContentByIds(Long ids) {
-        return tbContentMapper.deleteByPrimaryKey(ids);
-    }
 }

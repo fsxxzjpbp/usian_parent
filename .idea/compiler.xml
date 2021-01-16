@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="common_redis" />
         <module name="common_mapper" />
         <module name="common_utils" />
         <module name="usian_item_feign" />
@@ -26,6 +27,7 @@
       <module name="common_eureka" options="-parameters" />
       <module name="common_mapper" options="-parameters" />
       <module name="common_pojo" options="-parameters" />
+      <module name="common_redis" options="-parameters" />
       <module name="common_utils" options="-parameters" />
       <module name="usian_content_feign" options="-parameters" />
       <module name="usian_content_service" options="-parameters" />

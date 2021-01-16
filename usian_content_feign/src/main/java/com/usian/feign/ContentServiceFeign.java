@@ -27,10 +27,10 @@ public interface ContentServiceFeign {
     @RequestMapping("/service/contentCategory/updateContentCategory")
     Integer updateContentCategory(TbContentCategory tbContentCategory);
 
-    @RequestMapping("/service/contentCategory/insertTbContent")
+    @RequestMapping("/service/content/insertTbContent")
     Integer insertTbContent(TbContent tbContent);
 
-    @RequestMapping("/service/contentCategory/deleteContentByIds")
+    @RequestMapping("/service/content/deleteContentByIds")
     Integer deleteContentByIds(@RequestParam Long ids);
 
     @RequestMapping("/service/content/selectFrontendContentByAD")

@@ -43,13 +43,5 @@ public class ContentCategoryController {
         return contentCategoryService.selectTbContentAllByCategoryId(categoryId, page, rows);
     }
 
-    @RequestMapping("/insertTbContent")
-    Integer insertTbContent(@RequestBody TbContent tbContent) {
-        return contentCategoryService.insertTbContent(tbContent);
-    }
 
-    @RequestMapping("/deleteContentByIds")
-    Integer deleteContentByIds(Long ids) {
-        return contentCategoryService.deleteContentByIds(ids);
-    }
 }
