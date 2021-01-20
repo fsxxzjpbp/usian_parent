@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.usian.mapper.SearchItemMapper">
-
+    <select id="getSearchItemByItemId" parameterType="Long" resultType="com.usian.pojo.SearchItem">
+        select t1.id,
+               t1.title      item_title,
+               t1.sell_point item_sell_point,
+               t1.price      item_price,
+               t1.image      item_image,
+               t2.name       item_category_name,
+               t3.item_desc  item_desc
+        from tb_item t1
+                 join tb_item_cat t2 on t1.cid = t2.id
+                 join tb_item_desc t3 on t1.id = t3.item_id
+        where t1.status = 1
+          and t1.id = #{id}
+    </select>
+    <select id="ListSearchItem" resultType="com.usian.pojo.SearchItem">
+        select t1.id,
+               t1.title      item_title,
+               t1.sell_point item_sell_point,
+               t1.price      item_price,
+               t1.image      item_image,
+               t2.name       item_category_name,
+               t3.item_desc  item_desc
+        from tb_item t1
+                 join tb_item_cat t2 on t1.cid = t2.id
+                 join tb_item_desc t3 on t1.id = t3.item_id
+        where t1.status = 1
+    </select>
 </mapper>

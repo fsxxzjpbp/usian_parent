@@ -1,14 +1,6 @@
 spring:
   application:
     name: usian-search-web
-  data:
-    elasticsearch:
-      cluster-nodes: 192.168.220.139:9200,192.168.220.140:9200
-
-#索引名称
-ES_INDEX_NAME: usian
-#类型名称
-ES_TYPE_NAME: item
 server:
   port: 8096
 eureka:

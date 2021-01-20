@@ -7,6 +7,24 @@ spring:
     username: root
     password: 1234
     type: com.alibaba.druid.pool.DruidDataSource
+  data:
+    elasticsearch:
+      cluster-nodes: 192.168.220.139:9200,192.168.220.140:9200
+  rabbitmq:
+    host: 192.168.220.129
+    port: 5672
+    username: admin
+    password: 1111
+    virtual-host: /
+    listener:
+      direct:
+        acknowledge-mode: manual
+      simple:
+        acknowledge-mode: manual
+#索引名称
+ES_INDEX_NAME: usian
+#类型名称
+ES_TYPE_NAME: item
 server:
   port: 8095
 eureka:
