@@ -10,28 +10,41 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+/**
+ * 配置RedisTemplate
+ */
 @Configuration
 public class RedisConfig {
+
+    /**
+     * 创建RedisTemplate:用于执行Redis操作的方法
+     */
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(factory);
-        // 设置key的通用序列化器
+    public RedisTemplate<String, Object> setRedisTemplate(RedisConnectionFactory factory) {
+        //创建 RedisTemplate
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(factory);
+
+        //创建 Redis 中的 key 的序列化器
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        // 设置value的通用序列化器
-        Jackson2JsonRedisSerializer<Object> objectJackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        // 增强value的通用序列化器
-        ObjectMapper objectMapper = new ObjectMapper();
-        // 设置objectMapper可以访问属性，get，set方法，可以访问provider修饰的属性方法
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        // 忽略final修饰的属性
-        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        objectJackson2JsonRedisSerializer.setObjectMapper(objectMapper);
-        // 为key和value设置序列化接口
-        template.setValueSerializer(objectJackson2JsonRedisSerializer);
-        template.setStringSerializer(stringRedisSerializer);
-        template.setKeySerializer(stringRedisSerializer);
-        template.afterPropertiesSet();
-        return template;
+        //创建 Redis 中的 value 的序列化器
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new
+                Jackson2JsonRedisSerializer(Object.class);
+
+        ObjectMapper om = new ObjectMapper();
+        // 指定要序列化的field,get和set,以及修饰符范围，ANY是都有包括private和public
+        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        // 得到的json串带有对象的全类名，指定序列化输入的类型必须是非final修饰的
+        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        jackson2JsonRedisSerializer.setObjectMapper(om);
+
+        //设置key:value和hashKey:hashValue的序列化的方式
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashKeySerializer(stringRedisSerializer);
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+        //初始实例化redisTemplate
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
     }
 }

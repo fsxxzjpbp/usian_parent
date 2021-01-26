@@ -1,6 +1,6 @@
 spring:
   application:
-    name: usian-item-service
+    name: usian-sso-service
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/usian?characterEncoding=UTF-8&serverTimezone=GMT&useSSL=false
@@ -21,42 +21,14 @@ spring:
         max-active: 20 #连接池最大连接数
         max-idle: 10 #连接池中的最大空闲连接
         min-idle: 5 # 连接池中的最小空闲连接
-  rabbitmq:
-    host: 192.168.220.129
-    port: 5672
-    username: admin
-    password: 1111
-    virtual-host: /
 server:
-  port: 8090
+  port: 8098
 eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka/
-#mybatis-plus:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-#  global-config:
-#    db-config:
-#      id-type: auto
-#logging:
-#  level:
-#    root: warn
-#   com.usian: debug
 
 
-#配置缓存首页商品分类的 key
-PROTAL_CATRESULT_KEY: PROTAL_CATRESULT_KEY
-
-
-#商品详情
-ITEM_BASE_INFO: ITEM_BASE_INFO
-ITEM_DESC_INFO: ITEM_DESC_INFO
-ITEM_PARAM_INFO: ITEM_PARAM_INFO
-ITEM_INFO_EXPIRE: 86400
-
-
-#分布式锁
-SETNX_BASC_LOCK_KEY: SETNX_BASC_LOCK_KEY
-SETNX_DESC_LOCK_KEY: SETNX_DESC_LOCK_KEY
-SETNX_PARAM_LOCK_KEY: SETNX_PARAM_LOCK_KEY
+#单点登录失效时间
+USER_INFO: USER_INFO
+SESSION_EXPIRE: 604800

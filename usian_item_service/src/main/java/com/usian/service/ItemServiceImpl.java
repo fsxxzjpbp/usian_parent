@@ -7,10 +7,12 @@ import com.usian.mapper.TbItemDescMapper;
 import com.usian.mapper.TbItemMapper;
 import com.usian.mapper.TbItemParamItemMapper;
 import com.usian.pojo.*;
+import com.usian.redis.RedisClient;
 import com.usian.utils.IDUtils;
 import com.usian.utils.PageResult;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,19 +28,70 @@ public class ItemServiceImpl implements ItemService {
 
     @Resource
     private TbItemMapper tbItemMapper;
+
     @Resource
     private TbItemDescMapper tbItemDescMapper;
+
     @Resource
     private TbItemParamItemMapper tbItemParamItemMapper;
+
     @Resource
     private TbItemCatMapper tbItemCatMapper;
+
     @Autowired
     private AmqpTemplate amqpTemplate;
 
+    @Autowired
+    private RedisClient redisClient;
+
+    @Value("${ITEM_BASE_INFO}")
+    private String ITEM_BASE_INFO;
+
+    @Value("${ITEM_DESC_INFO}")
+    private String ITEM_DESC_INFO;
+
+    @Value("${ITEM_PARAM_INFO}")
+    private String ITEM_PARAM_INFO;
+
+    @Value("${ITEM_INFO_EXPIRE}")
+    private Long ITEM_INFO_EXPIRE;
+
+    @Value("${SETNX_BASC_LOCK_KEY}")
+    private String SETNX_BASC_LOCK_KEY;
+
+    @Value("${SETNX_DESC_LOCK_KEY}")
+    private String SETNX_DESC_LOCK_KEY;
+
+    @Value("${SETNX_PARAM_LOCK_KEY}")
+    private String SETNX_PARAM_LOCK_KEY;
 
     @Override
     public TbItem selectItemInfo(Long itemId) {
-        return tbItemMapper.selectByPrimaryKey(itemId);
+        TbItem tbItem = (TbItem) redisClient.hget(ITEM_BASE_INFO, itemId.toString());
+        if (tbItem != null) {
+            return tbItem;
+        }
+        // 防止缓存击穿：加分布式锁 设置失效时间，防止业务处理失败 造成死锁
+        if (redisClient.setnx(SETNX_BASC_LOCK_KEY + ":" + itemId, itemId, 30)) {
+            tbItem = tbItemMapper.selectByPrimaryKey(itemId);
+            // 防止缓存穿透:如果itemId为null,也存进redis中，失效时间设置短点
+            if (tbItem == null) {
+                redisClient.hset(ITEM_BASE_INFO, itemId.toString(), new TbItem());
+                redisClient.expire(ITEM_BASE_INFO, 30);
+            }
+            redisClient.hset(ITEM_BASE_INFO, itemId.toString(), tbItem);
+            redisClient.expire(ITEM_BASE_INFO, ITEM_INFO_EXPIRE);
+            // 释放锁
+            redisClient.del(SETNX_BASC_LOCK_KEY + ":" + itemId);
+            return tbItem;
+        } else {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return selectItemInfo(itemId);
+        }
     }
 
     /**
@@ -165,5 +218,62 @@ public class ItemServiceImpl implements ItemService {
         tbItemParamItems.get(0).setUpdated(date);
         Integer tbItemParamItemNum = tbItemParamItemMapper.updateByPrimaryKeyWithBLOBs(tbItemParamItems.get(0));
         return tbItemNum + tbItemDescNum + tbItemParamItemNum;
+    }
+
+    @Override
+    public TbItemDesc selectItemDescByItemId(Long itemId) {
+        TbItemDesc tbItemDesc = (TbItemDesc) redisClient.hget(ITEM_DESC_INFO, itemId.toString());
+        if (tbItemDesc != null) {
+            return tbItemDesc;
+        }
+        // 防止缓存击穿
+        if (redisClient.setnx(SETNX_DESC_LOCK_KEY + ":" + itemId, itemId, 30)) {
+            tbItemDesc = tbItemDescMapper.selectByPrimaryKey(itemId);
+            // 防止缓存穿透
+            if (tbItemDesc == null) {
+                redisClient.hset(ITEM_DESC_INFO, itemId.toString(), new TbItemDesc());
+                redisClient.expire(ITEM_DESC_INFO, 30);
+            }
+            redisClient.hset(ITEM_DESC_INFO, itemId.toString(), tbItemDesc);
+            redisClient.expire(ITEM_DESC_INFO, ITEM_INFO_EXPIRE);
+            redisClient.del(SETNX_DESC_LOCK_KEY + ":" + itemId);
+            return tbItemDesc;
+        } else {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return selectItemDescByItemId(itemId);
+        }
+    }
+
+    @Override
+    public TbItemParamItem selectTbItemParamItemByItemId(Long itemId) {
+        TbItemParamItem tbItemParamItem = (TbItemParamItem) redisClient.hget(ITEM_PARAM_INFO, itemId.toString());
+        if (tbItemParamItem != null) {
+            return tbItemParamItem;
+        }
+        if (redisClient.setnx(SETNX_PARAM_LOCK_KEY + ":" + itemId, itemId, 30)) {
+            TbItemParamItemExample example = new TbItemParamItemExample();
+            example.createCriteria().andItemIdEqualTo(itemId);
+            List<TbItemParamItem> itemParamItemList = tbItemParamItemMapper.selectByExampleWithBLOBs(example);
+            if (itemParamItemList == null || itemParamItemList.size() == 0) {
+                redisClient.hset(ITEM_PARAM_INFO, itemId.toString(), new TbItemParamItem());
+                redisClient.expire(ITEM_PARAM_INFO, 30);
+            }
+            tbItemParamItem = itemParamItemList.get(0);
+            redisClient.hset(ITEM_PARAM_INFO, itemId.toString(), tbItemParamItem);
+            redisClient.expire(ITEM_PARAM_INFO, ITEM_INFO_EXPIRE);
+            redisClient.del(SETNX_PARAM_LOCK_KEY + ":" + itemId);
+            return tbItemParamItem;
+        } else {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return selectTbItemParamItemByItemId(itemId);
+        }
     }
 }
