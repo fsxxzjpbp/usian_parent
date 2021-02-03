@@ -13,6 +13,9 @@
     <file url="file://$PROJECT_DIR$/common_utils/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/usian_cart_feign/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/usian_cart_service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/usian_cart_web/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/usian_content_feign" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/usian_content_feign/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/usian_content_service" charset="UTF-8" />
@@ -25,6 +28,9 @@
     <file url="file://$PROJECT_DIR$/usian_item_service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/usian_item_web" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/usian_item_web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/usian_order_feign/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/usian_order_service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/usian_order_web/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/usian_portal_web/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/usian_search_feign/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/usian_search_service/src/main/java" charset="UTF-8" />

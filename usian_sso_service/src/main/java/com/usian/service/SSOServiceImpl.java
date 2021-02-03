@@ -58,6 +58,7 @@ public class SSOServiceImpl implements SSOService {
 
     @Override
     public Map userLogin(String username, String password) {
+        // 将明文转化成加密状态
         password = MD5Utils.digest(password);
         TbUserExample example = new TbUserExample();
         example.createCriteria().andUsernameEqualTo(username).andPasswordEqualTo(password);
@@ -67,7 +68,9 @@ public class SSOServiceImpl implements SSOService {
         }
         TbUser tbUser = tbUserList.get(0);
         String token = UUID.randomUUID().toString();
+        // 存入redis及群里  模拟session来用于登录
         redisClient.set(USER_INFO + ":" + token, tbUser);
+        // 设置一个过期时间
         redisClient.expire(USER_INFO + ":" + token, SESSION_EXPIRE);
         Map<String, Object> map = new HashMap();
         map.put("token", token);
@@ -75,4 +78,22 @@ public class SSOServiceImpl implements SSOService {
         map.put("username", username);
         return map;
     }
+
+    @Override
+    public TbUser getUserByToken(String token) {
+        TbUser tbUser = (TbUser) redisClient.get(USER_INFO + ":" + token);
+        if (tbUser != null) {
+            // 重新设置一次失效时间
+            redisClient.expire(USER_INFO + ":" + token, SESSION_EXPIRE);
+            return tbUser;
+        }
+        return null;
+    }
+
+    @Override
+    public Boolean logOut(String token) {
+        return redisClient.del(USER_INFO + ":" + token);
+    }
+
+
 }

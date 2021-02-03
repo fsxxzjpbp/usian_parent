@@ -3,9 +3,7 @@ package com.usian.controller;
 import com.usian.pojo.TbUser;
 import com.usian.service.SSOService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -31,5 +29,15 @@ public class SSOController {
     @RequestMapping("/userLogin")
     Map userLogin(String username, String password) {
         return ssoService.userLogin(username, password);
+    }
+
+    @RequestMapping("/getUserByToken/{token}")
+    TbUser getUserByToken(@PathVariable String token) {
+        return ssoService.getUserByToken(token);
+    }
+
+    @RequestMapping("/logOut")
+    Boolean logOut( String token) {
+        return ssoService.logOut(token);
     }
 }

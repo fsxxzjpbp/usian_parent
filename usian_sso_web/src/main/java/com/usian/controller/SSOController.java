@@ -46,4 +46,22 @@ public class SSOController {
         }
         return Result.error("用户登录失败！");
     }
+
+    @RequestMapping("/getUserByToken/{token}")
+    public Result getUserByToken(@PathVariable String token) {
+        TbUser tbUser = ssoServiceFeign.getUserByToken(token);
+        if (tbUser != null) {
+            return Result.ok();
+        }
+        return Result.error("查询失败！");
+    }
+
+    @RequestMapping("/logOut")
+    public Result logOut(String token) {
+        Boolean logOut = ssoServiceFeign.logOut(token);
+        if (logOut) {
+            return Result.ok();
+        }
+        return Result.error("退出失败！");
+    }
 }

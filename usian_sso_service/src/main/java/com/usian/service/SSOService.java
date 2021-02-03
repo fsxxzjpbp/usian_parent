@@ -11,4 +11,8 @@ public interface SSOService {
     Integer userRegister(TbUser tbUser);
 
     Map userLogin(String username, String password);
+
+    TbUser getUserByToken(String token);
+
+    Boolean logOut(String token);
 }
