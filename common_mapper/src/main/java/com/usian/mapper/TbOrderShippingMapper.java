@@ -3,9 +3,11 @@ package com.usian.mapper;
 import com.usian.pojo.TbOrderShipping;
 import com.usian.pojo.TbOrderShippingExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface TbOrderShippingMapper {
     int countByExample(TbOrderShippingExample example);
 

@@ -2,10 +2,7 @@ package com.usian.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.usian.mapper.TbItemCatMapper;
-import com.usian.mapper.TbItemDescMapper;
-import com.usian.mapper.TbItemMapper;
-import com.usian.mapper.TbItemParamItemMapper;
+import com.usian.mapper.*;
 import com.usian.pojo.*;
 import com.usian.redis.RedisClient;
 import com.usian.utils.IDUtils;
@@ -64,6 +61,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Value("${SETNX_PARAM_LOCK_KEY}")
     private String SETNX_PARAM_LOCK_KEY;
+
+    @Autowired
+    private TbOrderItemMapper tbOrderItemMapper;
 
     @Override
     public TbItem selectItemInfo(Long itemId) {
@@ -275,5 +275,21 @@ public class ItemServiceImpl implements ItemService {
             }
             return selectTbItemParamItemByItemId(itemId);
         }
+    }
+
+    @Override
+    public Integer updateTbItemByOrderId(String orderId) {
+        TbOrderItemExample example = new TbOrderItemExample();
+        example.createCriteria().andOrderIdEqualTo(orderId);
+        List<TbOrderItem> tbOrderItemList = tbOrderItemMapper.selectByExample(example);
+        Integer result = 0;
+        for (TbOrderItem tbOrderItem : tbOrderItemList) {
+            // 通过商品ID获取商品
+            TbItem tbItem = tbItemMapper.selectByPrimaryKey(Long.valueOf(tbOrderItem.getItemId()));
+            tbItem.setNum(tbItem.getNum() - tbOrderItem.getNum());
+            tbItemMapper.updateByPrimaryKeySelective(tbItem);
+            result++;
+        }
+        return result;
     }
 }

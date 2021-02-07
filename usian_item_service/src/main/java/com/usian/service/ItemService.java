@@ -60,4 +60,5 @@ public interface ItemService {
 
     TbItemParamItem selectTbItemParamItemByItemId(Long itemId);
 
+    Integer updateTbItemByOrderId(String orderId);
 }
