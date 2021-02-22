@@ -67,6 +67,7 @@ public class SSOServiceImpl implements SSOService {
             return null;
         }
         TbUser tbUser = tbUserList.get(0);
+        tbUser.setPassword(null);
         String token = UUID.randomUUID().toString();
         // 存入redis及群里  模拟session来用于登录
         redisClient.set(USER_INFO + ":" + token, tbUser);

@@ -3,9 +3,10 @@ package com.usian.mapper;
 import com.usian.pojo.DeDuplication;
 import com.usian.pojo.DeDuplicationExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface DeDuplicationMapper {
     int countByExample(DeDuplicationExample example);
 

@@ -29,6 +29,7 @@ eureka:
       defaultZone: http://127.0.0.1:8761/eureka/
 
 
+
 #单点登录失效时间
 USER_INFO: USER_INFO
 SESSION_EXPIRE: 604800

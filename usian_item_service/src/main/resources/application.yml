@@ -27,22 +27,16 @@ spring:
     username: admin
     password: 1111
     virtual-host: /
+    listener:
+      direct:
+        acknowledge-mode: manual
+
 server:
   port: 8090
 eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka/
-#mybatis-plus:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-#  global-config:
-#    db-config:
-#      id-type: auto
-#logging:
-#  level:
-#    root: warn
-#   com.usian: debug
 
 
 #配置缓存首页商品分类的 key

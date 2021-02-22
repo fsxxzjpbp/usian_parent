@@ -41,3 +41,7 @@ spring:
 ORDER_ID_KEY: ORDER_ID_KEY #存进Redis中，用于订单ID 的key
 ORDER_ID_BEGIN: 100544    #用redis的incr功能自增，从这个值开始子层
 ORDER_ITEM_ID_KEY: ORDER_ITEM_ID_KEY #存进Redis中，用于订单商品详情ID 的key
+
+
+#quartz集群分布式锁
+SETNX_LOCK_ORDER_KEY: SETNX_LOCK_ORDER_KEY

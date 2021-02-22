@@ -1,15 +1,10 @@
 package com.usian.service;
 
-import com.usian.mapper.TbOrderItemMapper;
-import com.usian.mapper.TbOrderMapper;
-import com.usian.mapper.TbOrderShippingMapper;
-import com.usian.pojo.OrderInfo;
-import com.usian.pojo.TbOrder;
-import com.usian.pojo.TbOrderItem;
-import com.usian.pojo.TbOrderShipping;
+import com.usian.mapper.*;
+import com.usian.mq.MQSender;
+import com.usian.pojo.*;
 import com.usian.redis.RedisClient;
 import com.usian.utils.JsonUtils;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -44,7 +40,13 @@ public class OrderServiceImpl implements OrderService {
     private TbOrderItemMapper tbOrderItemMapper;
 
     @Autowired
-    private AmqpTemplate amqpTemplate;
+    private TbItemMapper tbItemMapper;
+
+    @Autowired
+    private LocalMessageMapper localMessageMapper;
+
+    @Autowired
+    private MQSender mqSender;
 
     @Override
     public String insertOrder(OrderInfo orderInfo) {
@@ -77,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
         List<TbOrderItem> tbOrderItemList = JsonUtils.jsonToList(orderItem, TbOrderItem.class);
         // 先判断redis中是否含有订单商品明细的Id
         if (!redisClient.exists(ORDER_ITEM_ID_KEY)) {
-            redisClient.set(ORDER_ITEM_ID_KEY, 1);
+            redisClient.set(ORDER_ITEM_ID_KEY, 0);
         }
         for (TbOrderItem tbOrderItem : tbOrderItemList) {
             // 自增长生成一个订单商品的ID
@@ -86,9 +88,43 @@ public class OrderServiceImpl implements OrderService {
             tbOrderItem.setId(orderItemId.toString());
             tbOrderItemMapper.insertSelective(tbOrderItem);
         }
-        // 发送消息到item端减库存
-        amqpTemplate.convertAndSend("order_exchange","order.add", orderId);
+        // 创建本地消息表，记录上游本地消息是否发送成功
+        LocalMessage localMessage = new LocalMessage();
+        localMessage.setTxNo(UUID.randomUUID().toString());
+        localMessage.setState(0);
+        localMessage.setOrderNo(orderId.toString());
+        localMessageMapper.insertSelective(localMessage);
+        /*// 发送消息到item端减库存
+        amqpTemplate.convertAndSend("order_exchange", "order.add", orderId);*/
+        mqSender.sendMsg(localMessage);
 
         return orderId.toString();
+    }
+
+    @Override
+    public List<TbOrder> selectTimeOutOrder() {
+        return tbOrderMapper.selectTimeOutOrder();
+    }
+
+    @Override
+    public void closeTimeOutOrder(TbOrder tbOrder) {
+        tbOrder.setStatus(6);
+        tbOrder.setCloseTime(new Date());
+        tbOrder.setUpdateTime(new Date());
+        tbOrder.setEndTime(new Date());
+        tbOrderMapper.updateByPrimaryKeySelective(tbOrder);
+    }
+
+    @Override
+    public void updateTbItemByOrderId(String orderId) {
+        TbOrderItemExample tbOrderItemExample = new TbOrderItemExample();
+        tbOrderItemExample.createCriteria().andOrderIdEqualTo(orderId);
+        List<TbOrderItem> tbOrderItemList = tbOrderItemMapper.selectByExample(tbOrderItemExample);
+        for (TbOrderItem tbOrderItem : tbOrderItemList) {
+            TbItem tbItem = tbItemMapper.selectByPrimaryKey(Long.valueOf(tbOrderItem.getItemId()));
+            tbItem.setNum(tbItem.getNum() + tbOrderItem.getNum());
+            tbItem.setUpdated(new Date());
+            tbItemMapper.updateByPrimaryKeySelective(tbItem);
+        }
     }
 }

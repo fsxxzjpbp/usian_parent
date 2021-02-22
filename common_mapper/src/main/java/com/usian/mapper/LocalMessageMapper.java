@@ -3,9 +3,11 @@ package com.usian.mapper;
 import com.usian.pojo.LocalMessage;
 import com.usian.pojo.LocalMessageExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface LocalMessageMapper {
     int countByExample(LocalMessageExample example);
 
